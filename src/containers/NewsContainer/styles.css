@@ -1,0 +1,9 @@
+.newsContainer {
+    margin: 10px;
+    border: 5px solid rgb(139, 93, 101);
+}
+
+.newsHead {
+    font-size: 15px;
+    font-weight: bold;
+}

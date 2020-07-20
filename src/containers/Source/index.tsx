@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {loadWithSource as loadWithSourceAction} from '../../actions/loadNews';
 import {loading as loadingAction} from '../../actions/loadNews';
 import news from '../../Queries/News';
+import './styles.css';
 
 
 interface Article {
@@ -21,7 +22,7 @@ interface Props {
 type Store = {
   articles: Array<Article>,
   isLoading: boolean,
-  totalResults: number,
+  totalResults: string,
   sourceName: string,
 };
 
@@ -39,15 +40,19 @@ class Source extends React.Component<Props> {
 
     render(){
         const { handlerclick } = this;
-        return( this.props.sources.map(
-                (sourceName) => {
-                    return (
-                        <div onClick={handlerclick}>
-                            {sourceName}
-                        </div>
-                    )
-                }
-        ))
+        return( 
+            <div className="sourceName__container">
+                {this.props.sources.map(
+                    (sourceName) => {
+                        return (
+                            <div onClick={handlerclick} className="sourceName">
+                                {sourceName}
+                            </div>
+                        )
+                    }
+                )}
+            </div>
+        )
     }
 };
 
@@ -58,7 +63,7 @@ const mapStateToProps = (state: any) => {
 }
       
 const mapDispatchToProps = (dispatch: any) => ({
-    loadWithSource: (totalResult: number, articles: Array<Article>) => dispatch(loadWithSourceAction(totalResult, articles)),  
+    loadWithSource: ( totalResult: number, articles: Array<Article>) => dispatch(loadWithSourceAction(totalResult, articles)),  
     loading: () => dispatch(loadingAction()),
 });
 

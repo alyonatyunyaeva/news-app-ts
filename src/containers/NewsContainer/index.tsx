@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 interface Article {
     sourceName: string,
     title: string,
@@ -13,8 +14,8 @@ interface Props {
 class NewsContainer extends React.Component<Props> {
     render(){
         return(
-            <div className="">
-                <div className="">
+            <div className="newsContainer">
+                <div className="newsHead">
                    {this.props.article.title}
                 </div>
                 <a className="" href={this.props.article.url}>
