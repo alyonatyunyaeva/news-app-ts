@@ -1,9 +1,11 @@
 .newsContainer {
     margin: 10px;
     border: 5px solid rgb(139, 93, 101);
+    padding: 10px;
 }
 
 .newsHead {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 800;
+    margin: 10px 0;
 }

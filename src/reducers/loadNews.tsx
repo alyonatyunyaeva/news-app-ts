@@ -3,6 +3,7 @@ import {
     LOADING_SUCCESS,
     LOADED_WITH_SOURCE,
 } from '../actions/types';
+import src from '*.bmp';
 
 
 interface Article {
@@ -13,9 +14,15 @@ interface Article {
     url: string,
     urlToImage: string, 
 };
+
+interface Source {
+  sourceName: string,
+  sourceId: string,
+}
   
 type Store = {
 articles: Array<Article>,
+sources: Array<Source>,
 isLoading: boolean,
 totalResults: number,
 };
@@ -30,10 +37,9 @@ data?: {
 
 const initialState = {
     articles: [],
+    sources: [],
     isLoading: false,
     totalResults: 0,
-    sources: [],
-
 };
 
 const reducer = (state: Store = initialState, action: NewsAction): Store => {
@@ -54,10 +60,15 @@ const reducer = (state: Store = initialState, action: NewsAction): Store => {
         newState.totalResults = action.data ? action.data.totalResults : newState.totalResults;
 
         newState.sources = action.data ? action.data.articles.reduce(
-          (totalList: Array<string>, article ) => {
-             if (!totalList.includes(article.sourceName) && article.sourceId){
-               totalList.push(article.sourceName);
-             }
+          (totalList: Array<Source>, article ) => {
+            const srcData = {
+              sourceName: article.sourceName,
+              sourceId: article.sourceId,
+            }
+            if (!totalList.some(srcData => srcData.sourceName === article.sourceName) && article.sourceId){
+              totalList.push(srcData)
+            }
+            console.log("totalList", totalList)
              return totalList
           }, []
         ) : newState.sources;

@@ -19,7 +19,7 @@ class NewsContainer extends React.Component<Props> {
                    {this.props.article.title}
                 </div>
                 <a className="" href={this.props.article.url}>
-                    {this.props.article.sourceName}
+                Read more on the original site {this.props.article.sourceName}
                 </a>
                 <div className="">
                     {this.props.article.description}

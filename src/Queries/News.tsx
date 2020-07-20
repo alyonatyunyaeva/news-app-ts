@@ -12,7 +12,7 @@ interface Article {
 const news = {
     apiKey: '766bd0772ece48af8741e11d3dc30cbe',
     getNews(){
-        return fetch(`http://newsapi.org/v2/top-headlines?country=ru&apiKey=${this.apiKey}`,
+        return fetch(`http://newsapi.org/v2/top-headlines?q=trump&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();
@@ -46,7 +46,7 @@ const news = {
         );
     },
     getSourceNews(sourceName: string){
-        return fetch(`https://newsapi.org/v2/top-headlines?sources=${sourceName}&apiKey=${this.apiKey}`,
+        return fetch(`https://newsapi.org/v2/everything?sources=${sourceName}&q=trump&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();
