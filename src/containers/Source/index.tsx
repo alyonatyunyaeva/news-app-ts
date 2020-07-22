@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import {loadWithSource as loadWithSourceAction} from '../../actions/loadNews';
 import {loading as loadingAction} from '../../actions/loadNews';
@@ -21,11 +21,19 @@ interface Article {
   }
 interface Props {
     sources: Array<Source>,
-    loading: ()=>{},
-    loadWithSource: (totalResult: number, articles: Array<Article>)=>{},
 }
 
-class Source extends React.Component<Props> {
+type Store = {
+    loadNews: {
+      sources: Array<string>,
+    }
+  };
+
+interface ActionProps {
+    loading: () => void,
+    loadWithSource: (totalResult: number, articles: Array<Article>) => void,
+}
+class Source extends React.Component<Props & ActionProps> {
 
     handlerclick = (ev: any) => {
         let sourceId = ev.target.getAttribute('id');
@@ -56,15 +64,15 @@ class Source extends React.Component<Props> {
     }
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps: any = (state: Store) => {
     return {
         sources: state.loadNews.sources,
     }   
 }
       
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     loadWithSource: ( totalResult: number, articles: Array<Article>) => dispatch(loadWithSourceAction(totalResult, articles)),  
     loading: () => dispatch(loadingAction()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Source)
+export default connect<Props, ActionProps, any>(mapStateToProps, mapDispatchToProps)(Source)

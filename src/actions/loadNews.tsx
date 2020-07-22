@@ -3,6 +3,7 @@ import {
     LOADING_SUCCESS,
     LOADED_WITH_SOURCE,
 } from './types';
+import { Dispatch } from 'react';
 
 interface Article {
     sourceName: string,
@@ -12,7 +13,7 @@ interface Article {
     urlToImage: string, 
 };
 
-const loading = () => (dispatch: any) => {
+const loading = () => (dispatch: Dispatch<any>) => {
     dispatch({
         type: LOADING_IN_PROGRESS
     });
@@ -20,7 +21,7 @@ const loading = () => (dispatch: any) => {
 
 
 
-const loaded = (totalResults: number, articles: Array<Article>) => (dispatch: any) => {
+const loaded = (totalResults: number, articles: Array<Article>) => (dispatch: Dispatch<any>) => {
     console.log("2. action");
     dispatch({
         type: LOADING_SUCCESS,
@@ -33,7 +34,7 @@ const loaded = (totalResults: number, articles: Array<Article>) => (dispatch: an
 
 
 
-const loadWithSource = (totalResults: number, articles: Array<Article>) => (dispatch: any) => {
+const loadWithSource = (totalResults: number, articles: Array<Article>) => (dispatch: Dispatch<any>) => {
     console.log("2. action");
     dispatch({
         type: LOADED_WITH_SOURCE,

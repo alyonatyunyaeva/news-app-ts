@@ -20,9 +20,12 @@ type Props = {
   isLoading: boolean,
   totalResults: string,
   sources: Array<string>,
-  loading: any,
-  loaded: any,
 };
+
+type ActionsProps = {
+  loading: () => void,
+  loaded: (totalResult: number, articles: Array<Article>)=> void,
+}
 
 type Store = {
   loadNews: {
@@ -34,7 +37,7 @@ type Store = {
 };
 
 
-class MainPage extends React.Component<Props>{
+class MainPage extends React.Component<Props & ActionsProps>{
   componentDidMount(){
     this.search();
   }
@@ -74,7 +77,7 @@ class MainPage extends React.Component<Props>{
   };
 }
 
-const mapStateToProps = (state: Store) => {
+const mapStateToProps: any = (state: Store) => {
   console.log("state")
   return {
     articles: state.loadNews.articles,
@@ -84,7 +87,7 @@ const mapStateToProps = (state: Store) => {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<any>): ActionsProps => {
   return {
     loaded: (totalResult: number, articles: Array<Article>) => dispatch(loadedAction(totalResult, articles)),
     loading: () => dispatch(loadingAction()),
@@ -92,4 +95,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default connect<Props, ActionsProps, any>(mapStateToProps, mapDispatchToProps)(MainPage);
