@@ -9,6 +9,11 @@ interface Article {
     urlToImage: string, 
 }
 
+interface Source {
+    sourceName: string,
+    sourceId: string,
+}
+
 const news = {
     apiKey: '766bd0772ece48af8741e11d3dc30cbe',
     getNews(){
@@ -25,7 +30,6 @@ const news = {
                         (article: Article) => {
                             return  {
                                 sourceName: article.source.name,
-                                sourceId: article.source.id,
                                 title: article.title,
                                 description: article.description,
                                 url: article.url,
@@ -45,8 +49,35 @@ const news = {
             }
         );
     },
-    getSourceNews(sourceName: string){
-        return fetch(`https://newsapi.org/v2/everything?sources=${sourceName}&q=trump&apiKey=${this.apiKey}`,
+    getSources(){
+        return fetch(`http://newsapi.org/v2/top-headlines?q=trump&apiKey=${this.apiKey}`,
+        ).then(
+            response=>{
+                return response.json();
+            }
+        ).then(
+            (jsonResponse) => {
+                return jsonResponse.articles.map(
+                    (article: Article): Source => {
+                        return  {
+                            sourceName: article.source.name,
+                            sourceId: article.source.id,                             
+                        };
+                    }
+                )   
+            }
+        ).catch(
+            () => {
+                console.log('--  Error getting sources --')
+                return {
+                    sourceName: 'ooooops',
+                    sourceId: '',
+                };
+            }
+        );
+    },
+    getNewsBySrc(sourceName: string){
+        return fetch(`https://newsapi.org/v2/everything?sources=${sourceName}&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();
@@ -65,7 +96,7 @@ const news = {
                                 urlToImage: article.urlToImage,                               
                             };
                         }
-                    ) 
+                    )
                 }
             }
         ).catch(
@@ -78,7 +109,6 @@ const news = {
             }
         );
     },
-
 };
 
 export default news;

@@ -1,19 +1,7 @@
 import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
-import {loadWithSource as loadWithSourceAction} from '../../actions/loadNews';
-import {loading as loadingAction} from '../../actions/loadNews';
-import news from '../../Queries/News';
+import {loadingNewsBySrc, loadingSources} from '../../actions/loadNews';
 import './styles.css';
-
-
-interface Article {
-    sourceName: string,
-    sourceId: string,
-    title: string,
-    description: string,
-    url: string,
-    urlToImage: string, 
-  }
 
   interface Source {
     sourceName: string,
@@ -22,43 +10,36 @@ interface Article {
 interface Props {
     sources: Array<Source>,
 }
-
-type Store = {
+interface Store{
     loadNews: {
-      sources: Array<string>,
+    sources: Array<string>,
     }
   };
-
 interface ActionProps {
-    loading: () => void,
-    loadWithSource: (totalResult: number, articles: Array<Article>) => void,
+    loadingNewsBySrc: (sourceId: string) => void,
+    loadingSources: () => void,
 }
 class Source extends React.Component<Props & ActionProps> {
-
+    componentDidMount(){
+        this.props.loadingSources();
+    }
     handlerclick = (ev: any) => {
         let sourceId = ev.target.getAttribute('id');
-        console.log(sourceId, "source id")
-        this.props.loading();
-        news.getSourceNews(sourceId).then(
-            ({totalResults, articles}) => {
-        this.props.loadWithSource(totalResults, articles);
-      })
-
+        this.props.loadingNewsBySrc(sourceId);
     }    
-
-    render(){
+    renderItem = (source: Source) => {
         const { handlerclick } = this;
+            return (
+                <div onClick={handlerclick} className="sourceName" id={source.sourceId} key={source.sourceId}>
+                    {source.sourceName}
+                </div>
+            )
+    }
+
+    render(){  
         return( 
             <div className="sourceName__container">
-                {this.props.sources.map(
-                    (source) => {
-                        return (
-                            <div onClick={handlerclick} className="sourceName" id={source.sourceId} key={source.sourceId}>
-                                {source.sourceName}
-                            </div>
-                        )
-                    }
-                )}
+                {this.props.sources.map(this.renderItem)}
             </div>
         )
     }
@@ -71,8 +52,8 @@ const mapStateToProps: any = (state: Store) => {
 }
       
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    loadWithSource: ( totalResult: number, articles: Array<Article>) => dispatch(loadWithSourceAction(totalResult, articles)),  
-    loading: () => dispatch(loadingAction()),
+    loadingNewsBySrc: ( sourceId: string) => dispatch(loadingNewsBySrc(sourceId)),  
+    loadingSources: () => dispatch(loadingSources()),
 });
 
 export default connect<Props, ActionProps, any>(mapStateToProps, mapDispatchToProps)(Source)

@@ -1,35 +1,82 @@
-import React from 'react';
-import './styles.css';
+import React, { Dispatch } from 'react';
+import { connect } from 'react-redux';
+import NewsItem from '../NewsItem';
+import {loadingNewsContent} from '../../actions/loadNews'
+
 interface Article {
     sourceName: string,
+    sourceId: string,
     title: string,
     description: string,
     url: string,
     urlToImage: string, 
-  }
+};
 interface Props {
-    article: Article;
+    articles: Array<Article>,
+    isLoading: boolean,
+    totalResults: string,
+};
+interface ActionsProps {
+    loadingNewsContent: () => void,
 }
+interface Store {
+    loadNews: {
+        articles: Array<Article>,
+        isLoading: boolean,
+        totalResults: string,
+        sources: Array<string>,
+    }
+};
+class NewsContainer extends React.Component<Props & ActionsProps> {
+    componentDidMount(){
+        this.props.loadingNewsContent();
+    }
 
-class NewsContainer extends React.Component<Props> {
-    render(){
-        return(
-            <div className="newsContainer">
-                <div className="newsHead">
-                   {this.props.article.title}
-                </div>
-                <a className="" href={this.props.article.url}>
-                Read more on the original site {this.props.article.sourceName}
-                </a>
-                <div className="">
-                    {this.props.article.description}
-                </div>
-                {/* <div className="">
-                    <img src={this.props.article.urlToImage}/>
-                </div> */}
+    renderItem(article: Article) {
+        return (
+            <NewsItem 
+                key={article.url}
+                sourceName = {article.sourceName}
+                title = {article.title}
+                description = {article.description}
+                url = {article.url}
+                urlToImage = {article.urlToImage} 
+            />
+        )
+    }
+    render(){ 
+        return( 
+            <div>
+                {
+                    (this.props.isLoading)&&(
+                        <div>Loading</div>
+                    )
+                }
+                {
+                    (!this.props.isLoading)&&(
+                        <div className="">
+                            {this.props.articles.map(this.renderItem)}
+                        </div>
+                    )
+                }
             </div>
-        );
-    };
+        )
+    }
 };
 
-export default NewsContainer;
+const mapStateToProps = (state: Store) => {
+    console.log("articles: okokokokokok", state.loadNews.articles,)
+    return {
+        articles: state.loadNews.articles,
+        isLoading: state.loadNews.isLoading,
+        totalResults: state.loadNews.totalResults,
+    }   
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<any>): ActionsProps => {
+  return {
+    loadingNewsContent: () => dispatch(loadingNewsContent()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewsContainer)
