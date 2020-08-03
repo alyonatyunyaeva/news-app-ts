@@ -27,7 +27,7 @@ interface Store {
         sources: Array<string>,
     }
 };
-class NewsContainer extends React.Component<Props & ActionsProps> {
+class NewsContainer extends React.PureComponent<Props & ActionsProps> {
     componentDidMount(){
         this.props.loadingNewsContent();
     }
@@ -65,7 +65,6 @@ class NewsContainer extends React.Component<Props & ActionsProps> {
 };
 
 const mapStateToProps = (state: Store) => {
-    console.log("articles: okokokokokok", state.loadNews.articles,)
     return {
         articles: state.loadNews.articles,
         isLoading: state.loadNews.isLoading,

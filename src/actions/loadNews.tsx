@@ -4,6 +4,7 @@ import {
     LOADING_IN_PROGRESS,
     LOADING_NEWS_CONTENT_SUCCESS,
     LOADING_SOURCES_SUCCESS,
+    CURRENT_SRC,
 } from './types';
 
 import { Dispatch } from 'react';
@@ -70,7 +71,6 @@ const loadingNewsContent = () => {
 
 const loadingSources = () => {
     return (dispatch: any) => {
-        console.log("hello")
         news.getSources().then(
             (sources) => {
               console.log("sources fetch ",sources)
@@ -104,4 +104,18 @@ const loadingNewsBySrc = (sourceId: string) => {
     };
 }
 
-export {loadingNewsContent, loadingSources, loadingNewsBySrc};
+const setCurrentSrc = (currentSrc: string) => (
+    {
+        type: CURRENT_SRC,
+        data: {
+            currentSrc,
+        }
+    }
+);
+export {
+    loadingNewsContent, 
+    loadingSources, 
+    loadingNewsBySrc,
+    setCurrentSrc
+    
+};

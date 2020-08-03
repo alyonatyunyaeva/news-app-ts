@@ -1,12 +1,6 @@
 import React from 'react';
-// import React, { Dispatch } from 'react';
-// import { connect } from 'react-redux';
-// import {loadingNewsContent} from '../../actions/loadNews'
-// import {loadingSources} from '../../actions/loadNews'
-// import {loadingNewsBySrc} from '../../actions/loadNews'
 import NewsContainer from '../NewsContainer';
 import Source from '../../containers/Source';
-// import news from '../../Queries/News';
 import './styles.css';
 
 // interface Article {
@@ -37,7 +31,7 @@ import './styles.css';
 // };
 
 
-class MainPage extends React.Component{
+class MainPage extends React.PureComponent{
   render(){
     return(
       <div>                    
@@ -63,4 +57,5 @@ class MainPage extends React.Component{
 
 
 // export default connect<Props, ActionsProps, any>(mapStateToProps, mapDispatchToProps)(MainPage);
+
 export default MainPage;

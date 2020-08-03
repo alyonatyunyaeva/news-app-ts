@@ -17,7 +17,7 @@ interface Source {
 const news = {
     apiKey: '766bd0772ece48af8741e11d3dc30cbe',
     getNews(){
-        return fetch(`http://newsapi.org/v2/top-headlines?q=trump&apiKey=${this.apiKey}`,
+        return fetch(`http://newsapi.org/v2/top-headlines?country=us&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();
@@ -42,7 +42,7 @@ const news = {
         ).catch(
             () => {
                 console.log('--  Error getting news --')
-                return {
+                return { 
                     totalResults: 0,
                     articles: []
                 };
@@ -50,7 +50,7 @@ const news = {
         );
     },
     getSources(){
-        return fetch(`http://newsapi.org/v2/top-headlines?q=trump&apiKey=${this.apiKey}`,
+        return fetch(`http://newsapi.org/v2/top-headlines?country=us&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();
@@ -77,7 +77,7 @@ const news = {
         );
     },
     getNewsBySrc(sourceName: string){
-        return fetch(`https://newsapi.org/v2/everything?sources=${sourceName}&apiKey=${this.apiKey}`,
+        return fetch(`https://newsapi.org/v2/everything?sources=${sourceName}&language=en&apiKey=${this.apiKey}`,
         ).then(
             response=>{
                 return response.json();

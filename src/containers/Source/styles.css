@@ -11,3 +11,9 @@
 .sourceName {
     margin: 10px;
 }
+
+.sourceName__current {
+    display: flex;
+    justify-content: space-around;
+    font-weight: bold;
+}
