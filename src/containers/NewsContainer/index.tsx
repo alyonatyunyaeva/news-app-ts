@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import NewsItem from '../NewsItem';
 import {loadingNewsContent} from '../../actions/loadNews'
@@ -15,8 +15,9 @@ interface Props {
     articles: Array<Article>,
     isLoading: boolean,
     totalResults: string,
-};
-interface ActionsProps {
+    loadingNewsContent: () => void,
+}
+interface ActionProps {
     loadingNewsContent: () => void,
 }
 interface Store {
@@ -27,12 +28,12 @@ interface Store {
         sources: Array<string>,
     }
 };
-class NewsContainer extends React.PureComponent<Props & ActionsProps> {
-    componentDidMount(){
-        this.props.loadingNewsContent();
-    }
+function NewsContainer (props: Props) {
+    useEffect(()=>{
+        props.loadingNewsContent();
+    }, []);
 
-    renderItem(article: Article) {
+    const renderItem = useCallback((article: Article) => {
         return (
             <NewsItem 
                 key={article.url}
@@ -43,39 +44,38 @@ class NewsContainer extends React.PureComponent<Props & ActionsProps> {
                 urlToImage = {article.urlToImage} 
             />
         )
-    }
-    render(){ 
-        return( 
-            <div>
-                {
-                    (this.props.isLoading)&&(
-                        <div>Loading</div>
-                    )
-                }
-                {
-                    (!this.props.isLoading)&&(
-                        <div className="">
-                            {this.props.articles.map(this.renderItem)}
-                        </div>
-                    )
-                }
-            </div>
-        )
-    }
+    }, []);
+
+    return( 
+        <div>
+            {
+                (props.isLoading)&&(
+                    <div>Loading</div>
+                )
+            }
+            {
+                (!props.isLoading)&&(
+                    <div className="">
+                        {props.articles.map(renderItem)}
+                    </div>
+                )
+            }
+        </div>
+    )
 };
 
-const mapStateToProps = (state: Store) => {
+function mapStateToProps(state: Store) {
     return {
         articles: state.loadNews.articles,
         isLoading: state.loadNews.isLoading,
         totalResults: state.loadNews.totalResults,
     }   
-}
+};
 
-const mapDispatchToProps = (dispatch: Dispatch<any>): ActionsProps => {
+function mapDispatchToProps(dispatch: Dispatch<any>): ActionProps {
   return {
     loadingNewsContent: () => dispatch(loadingNewsContent()),
   };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewsContainer)
